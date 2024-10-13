@@ -8,7 +8,7 @@ import { Between, FindOptionsWhere, In, LessThan, MoreThan } from 'typeorm';
 
 export class PostController {
     // Create a post
-    static createPost = async (req: Request, res: Response) => {
+    static readonly createPost = async (req: Request, res: Response) => {
         const userId = req.user.userId;
         const { boardId, categoryId, title, content, season, isAnonymous } = req.body;
         const postRepository = AppDataSource.getRepository(Post);

@@ -15,6 +15,7 @@ import boardRoutes from './routes/boards';
 import categoryRoutes from './routes/categories';
 import coachRoutes from './routes/coach';
 import { RoleType } from './entities/enums/RoleType';
+import news from './routes/news';
 
 declare global {
     namespace Express {
@@ -46,10 +47,11 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/points', pointRoutes);
 app.use('/coach', coachRoutes);
+app.use('/news', news);
 
 // 기본 페이지
 app.get('/', (req, res) => {
-    res.send('안녕하세요, 기본 페이지입니다.');
+    res.send('Hello, this is the main page.');
 });
 
 AppDataSource.initialize()
