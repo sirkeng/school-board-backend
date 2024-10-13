@@ -17,6 +17,7 @@ import coachRoutes from './routes/coach';
 import { RoleType } from './entities/enums/RoleType';
 import news from './routes/news';
 import scoreboard from './routes/scoreboard';
+import season from './routes/season';
 
 declare global {
     namespace Express {
@@ -50,6 +51,7 @@ app.use('/points', pointRoutes);
 app.use('/coach', coachRoutes);
 app.use('/news', news);
 app.use('/scoreboard', scoreboard);
+app.use('/seasons', season);
 
 // 기본 페이지
 app.get('/', (req, res) => {
