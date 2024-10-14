@@ -1,14 +1,17 @@
 import { Request, Response } from 'express';
-import { Season } from '../entities/Season';
 import { Sport } from '../entities/Sport';
+import { Season } from '../entities/Season';
 import AppDataSource from '../database/data-source';
+import path from 'path';
+import fs from 'fs';
+import { UPLOADS_FOLDER } from '../config/filePaths';
 
 export class SportController {
     static async createSport(req: Request, res: Response) {
         const { sportName, seasonId } = req.body;
         const sportRepository = AppDataSource.getRepository(Sport);
         const seasonRepository = AppDataSource.getRepository(Season);
-        const file = req.file as Express.MulterS3.File;
+        const file = req.file;
 
         try {
             const season = await seasonRepository.findOneBy({ id: seasonId });
@@ -16,9 +19,10 @@ export class SportController {
                 return res.status(404).json({ message: 'Season not found' });
             }
 
+            const imageUrl = file ? `/uploads/images/${file.filename}` : '';
             const newSport = sportRepository.create({
                 sportName,
-                imageUrl: file.location,
+                imageUrl,
                 season,
             });
             const savedSport = await sportRepository.save(newSport);
@@ -33,7 +37,7 @@ export class SportController {
         const { id } = req.params;
         const { sportName } = req.body;
         const sportRepository = AppDataSource.getRepository(Sport);
-        const file = req.file as Express.MulterS3.File;
+        const file = req.file;
 
         try {
             const sport = await sportRepository.findOneBy({ id: Number(id) });
@@ -41,10 +45,18 @@ export class SportController {
                 return res.status(404).json({ message: 'Sport not found' });
             }
 
-            sport.sportName = sportName;
             if (file) {
-                sport.imageUrl = file.location;
+                // Delete old image if exists
+                if (sport.imageUrl) {
+                    const oldImagePath = path.join(UPLOADS_FOLDER, sport.imageUrl);
+                    if (fs.existsSync(oldImagePath)) {
+                        fs.unlinkSync(oldImagePath);
+                    }
+                }
+                sport.imageUrl = `/uploads/images/${file.filename}`;
             }
+
+            sport.sportName = sportName;
             const updatedSport = await sportRepository.save(sport);
             res.status(200).json(updatedSport);
         } catch (error) {
@@ -61,6 +73,14 @@ export class SportController {
             const sport = await sportRepository.findOneBy({ id: Number(id) });
             if (!sport) {
                 return res.status(404).json({ message: 'Sport not found' });
+            }
+
+            // Delete image if exists
+            if (sport.imageUrl) {
+                const imagePath = path.join(UPLOADS_FOLDER, sport.imageUrl);
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                }
             }
 
             await sportRepository.remove(sport);

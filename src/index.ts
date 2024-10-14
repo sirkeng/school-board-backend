@@ -51,7 +51,7 @@ app.use('/points', pointRoutes);
 app.use('/coach', coachRoutes);
 app.use('/news', news);
 app.use('/scoreboard', scoreboard);
-app.use('/seasons', season);
+app.use('/season', season);
 
 // 기본 페이지
 app.get('/', (req, res) => {
