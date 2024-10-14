@@ -18,6 +18,7 @@ import { RoleType } from './entities/enums/RoleType';
 import news from './routes/news';
 import scoreboard from './routes/scoreboard';
 import season from './routes/season';
+import path from 'path';
 
 declare global {
     namespace Express {
@@ -36,6 +37,8 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 
 app.use('/boards', boardRoutes);
 app.use('/categories', categoryRoutes);
