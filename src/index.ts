@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 import postRoutes from './routes/posts';
 import commentRoutes from './routes/comments';
 import likeRoutes from './routes/likes';
@@ -18,7 +19,7 @@ import { RoleType } from './entities/enums/RoleType';
 import news from './routes/news';
 import scoreboard from './routes/scoreboard';
 import season from './routes/season';
-import path from 'path';
+import banner from './routes/banner';
 
 declare global {
     namespace Express {
@@ -55,6 +56,7 @@ app.use('/coach', coachRoutes);
 app.use('/news', news);
 app.use('/scoreboard', scoreboard);
 app.use('/season', season);
+app.use('/banner', banner);
 
 // 기본 페이지
 app.get('/', (req, res) => {

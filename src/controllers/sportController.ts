@@ -48,7 +48,7 @@ export class SportController {
             if (file) {
                 // Delete old image if exists
                 if (sport.imageUrl) {
-                    const oldImagePath = path.join(UPLOADS_FOLDER, sport.imageUrl);
+                    const oldImagePath = path.join(UPLOADS_FOLDER, '..', sport.imageUrl);
                     if (fs.existsSync(oldImagePath)) {
                         fs.unlinkSync(oldImagePath);
                     }
@@ -77,7 +77,7 @@ export class SportController {
 
             // Delete image if exists
             if (sport.imageUrl) {
-                const imagePath = path.join(UPLOADS_FOLDER, sport.imageUrl);
+                const imagePath = path.join(UPLOADS_FOLDER, '..', sport.imageUrl);
                 if (fs.existsSync(imagePath)) {
                     fs.unlinkSync(imagePath);
                 }
