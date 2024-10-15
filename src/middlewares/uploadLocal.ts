@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         const date = moment().format('YYYY-MM-DD-HH-mm-ss');
         const fileExtension = file.originalname.split('.').pop();
-        const filename = `file-${date}.${fileExtension}`;
+        const filename = `file-${date}-${Math.round(Math.random() * 1e9)}.${fileExtension}`;
         cb(null, filename);
     },
 });
