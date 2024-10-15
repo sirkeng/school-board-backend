@@ -7,6 +7,25 @@ import fs from 'fs';
 import { UPLOADS_FOLDER } from '../config/filePaths';
 
 export class DetailSportController {
+    static async getDetailSport(req: Request, res: Response) {
+        const { id } = req.params;
+        const detailSportRepository = AppDataSource.getRepository(DetailSport);
+
+        try {
+            const detailSport = await detailSportRepository.findOne({
+                where: { id: Number(id) },
+                relations: ['sport', 'awards'],
+            });
+            if (!detailSport) {
+                return res.status(404).json({ message: 'Detail sport not found' });
+            }
+            res.status(200).json(detailSport);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Failed to get detail sport' });
+        }
+    }
+
     static async createDetailSport(req: Request, res: Response) {
         const {
             bannerTitle,
@@ -46,25 +65,6 @@ export class DetailSportController {
         } catch (error) {
             console.error(error);
             res.status(400).json({ message: 'Failed to create detail sport' });
-        }
-    }
-
-    static async getDetailSport(req: Request, res: Response) {
-        const { id } = req.params;
-        const detailSportRepository = AppDataSource.getRepository(DetailSport);
-
-        try {
-            const detailSport = await detailSportRepository.findOne({
-                where: { id: Number(id) },
-                relations: ['sport', 'awards'],
-            });
-            if (!detailSport) {
-                return res.status(404).json({ message: 'Detail sport not found' });
-            }
-            res.status(200).json(detailSport);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Failed to get detail sport' });
         }
     }
 
