@@ -6,9 +6,27 @@ import { isLoggedin } from '../middlewares/auth';
 
 const router = Router();
 
-router.post('/', isLoggedin, uploadLocal.single('image'), DetailSportController.createDetailSport); // Create detail sport
 router.get('/:id', DetailSportController.getDetailSport); // Get detail sport by ID
-router.put('/:id', isLoggedin, uploadLocal.single('image'), DetailSportController.updateDetailSport); // Update detail sport by ID
+router.post(
+    '/',
+    isLoggedin,
+    uploadLocal.fields([
+        { name: 'bannerImage', maxCount: 1 },
+        { name: 'coachProfileImage', maxCount: 1 },
+        { name: 'seasonImage', maxCount: 1 },
+    ]),
+    DetailSportController.createDetailSport,
+); // Create detail sport
+router.put(
+    '/:id',
+    isLoggedin,
+    uploadLocal.fields([
+        { name: 'bannerImage', maxCount: 1 },
+        { name: 'coachProfileImage', maxCount: 1 },
+        { name: 'seasonImage', maxCount: 1 },
+    ]),
+    DetailSportController.updateDetailSport,
+); // Update detail sport by ID
 router.delete('/:id', isLoggedin, DetailSportController.deleteDetailSport); // Delete detail sport by ID
 
 router.post('/award', isLoggedin, AwardController.createAward); // Create award

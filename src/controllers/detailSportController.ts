@@ -38,10 +38,15 @@ export class DetailSportController {
             sportId,
         } = req.body;
         const detailSportRepository = AppDataSource.getRepository(DetailSport);
-        const file = req.file;
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
         try {
-            const bannerImageUrl = file ? `/uploads/images/${file.filename}` : '';
+            const bannerImageUrl = files.bannerImage ? `/uploads/images/${files.bannerImage[0].filename}` : '';
+            const coachProfileImageUrl = files.coachProfileImage
+                ? `/uploads/images/${files.coachProfileImage[0].filename}`
+                : '';
+            const seasonImageUrl = files.seasonImage ? `/uploads/images/${files.seasonImage[0].filename}` : '';
+
             const sport = await AppDataSource.getRepository(Sport).findOneBy({ id: sportId });
             if (!sport) {
                 return res.status(404).json({ message: 'Sport not found' });
@@ -52,12 +57,12 @@ export class DetailSportController {
                 bannerImageUrl,
                 coachName,
                 coachDescription,
-                coachProfileImageUrl: bannerImageUrl,
+                coachProfileImageUrl,
                 recentGameTitle,
                 recentGameDescription,
                 seasonNumber,
                 seasonDetail,
-                seasonImageUrl: bannerImageUrl,
+                seasonImageUrl,
                 sport,
             });
             const savedDetailSport = await detailSportRepository.save(newDetailSport);
@@ -80,7 +85,7 @@ export class DetailSportController {
             seasonDetail,
         } = req.body;
         const detailSportRepository = AppDataSource.getRepository(DetailSport);
-        const file = req.file;
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
         try {
             const detailSport = await detailSportRepository.findOneBy({ id: Number(id) });
@@ -88,7 +93,7 @@ export class DetailSportController {
                 return res.status(404).json({ message: 'Detail sport not found' });
             }
 
-            if (file) {
+            if (files.bannerImage) {
                 // Delete old image if exists
                 if (detailSport.bannerImageUrl) {
                     const oldImagePath = path.join(UPLOADS_FOLDER, '..', detailSport.bannerImageUrl);
@@ -96,7 +101,27 @@ export class DetailSportController {
                         fs.unlinkSync(oldImagePath);
                     }
                 }
-                detailSport.bannerImageUrl = `/uploads/images/${file.filename}`;
+                detailSport.bannerImageUrl = `/uploads/images/${files.bannerImage[0].filename}`;
+            }
+
+            if (files.coachProfileImage) {
+                if (detailSport.coachProfileImageUrl) {
+                    const oldImagePath = path.join(UPLOADS_FOLDER, '..', detailSport.coachProfileImageUrl);
+                    if (fs.existsSync(oldImagePath)) {
+                        fs.unlinkSync(oldImagePath);
+                    }
+                }
+                detailSport.coachProfileImageUrl = `/uploads/images/${files.coachProfileImage[0].filename}`;
+            }
+
+            if (files.seasonImage) {
+                if (detailSport.seasonImageUrl) {
+                    const oldImagePath = path.join(UPLOADS_FOLDER, '..', detailSport.seasonImageUrl);
+                    if (fs.existsSync(oldImagePath)) {
+                        fs.unlinkSync(oldImagePath);
+                    }
+                }
+                detailSport.seasonImageUrl = `/uploads/images/${files.seasonImage[0].filename}`;
             }
 
             detailSport.bannerTitle = bannerTitle;
