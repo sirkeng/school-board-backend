@@ -41,7 +41,6 @@ export class BannerController {
                 // Delete old video if exists
                 if (banner.videoUrl) {
                     const oldVideoPath = path.join(UPLOADS_FOLDER, '..', banner.videoUrl);
-                    console.log('oldVideoPath', oldVideoPath);
                     if (fs.existsSync(oldVideoPath)) {
                         fs.unlinkSync(oldVideoPath);
                     }

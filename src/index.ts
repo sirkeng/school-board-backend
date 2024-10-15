@@ -20,6 +20,7 @@ import news from './routes/news';
 import scoreboard from './routes/scoreboard';
 import season from './routes/season';
 import banner from './routes/banner';
+import detailSport from './routes/detailSport';
 
 declare global {
     namespace Express {
@@ -57,6 +58,7 @@ app.use('/news', news);
 app.use('/scoreboard', scoreboard);
 app.use('/season', season);
 app.use('/banner', banner);
+app.use('/detail-sport', detailSport);
 
 // 기본 페이지
 app.get('/', (req, res) => {

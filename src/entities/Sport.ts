@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Season } from './Season';
+import { DetailSport } from './DetailSport';
 
 @Entity('sports')
 export class Sport {
@@ -14,4 +15,7 @@ export class Sport {
 
     @ManyToOne(() => Season, season => season.sports)
     season: Season;
+
+    @OneToMany(() => DetailSport, detailSport => detailSport.sport)
+    detailSport: DetailSport[];
 }
