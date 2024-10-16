@@ -52,6 +52,12 @@ export class DetailSportController {
                 return res.status(404).json({ message: 'Sport not found' });
             }
 
+            // Check if a detail sport with the same sportId already exists
+            const existingDetailSport = await detailSportRepository.findOneBy({ sport: { id: sportId } });
+            if (existingDetailSport) {
+                return res.status(400).json({ message: 'Detail sport for this sport already exists' });
+            }
+
             const newDetailSport = detailSportRepository.create({
                 bannerTitle,
                 bannerImageUrl,
