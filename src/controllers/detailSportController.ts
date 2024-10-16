@@ -13,7 +13,7 @@ export class DetailSportController {
 
         try {
             const detailSport = await detailSportRepository.findOne({
-                where: { id: Number(id) },
+                where: { sport: { id: Number(id) } },
                 relations: ['sport', 'awards'],
             });
             if (!detailSport) {
