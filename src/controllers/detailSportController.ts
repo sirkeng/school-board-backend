@@ -49,13 +49,13 @@ export class DetailSportController {
 
             const sport = await AppDataSource.getRepository(Sport).findOneBy({ id: sportId });
             if (!sport) {
-                return res.status(404).json({ message: 'Sport not found' });
+                return res.status(409).json({ message: 'Sport not found' });
             }
 
             // Check if a detail sport with the same sportId already exists
             const existingDetailSport = await detailSportRepository.findOneBy({ sport: { id: sportId } });
             if (existingDetailSport) {
-                return res.status(400).json({ message: 'Detail sport for this sport already exists' });
+                return res.status(409).json({ message: 'Detail sport for this sport already exists' });
             }
 
             const newDetailSport = detailSportRepository.create({
