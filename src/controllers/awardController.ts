@@ -10,7 +10,7 @@ export class AwardController {
         const detailSportRepository = AppDataSource.getRepository(DetailSport);
 
         try {
-            const detailSport = await detailSportRepository.findOneBy({ id: detailSportId });
+            const detailSport = await detailSportRepository.findOneBy({ sport: { id: detailSportId } });
             if (!detailSport) {
                 return res.status(404).json({ message: 'Detail sport not found' });
             }
