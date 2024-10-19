@@ -6,7 +6,10 @@ import { isLoggedin } from '../middlewares/auth';
 
 const router = Router();
 
+router.get('/last-seasons', DetailSportController.getLastSeasons); // Fetch last seasons by limit
+
 router.get('/:id', DetailSportController.getDetailSport); // Get detail sport by sport ID
+
 router.post(
     '/',
     isLoggedin,

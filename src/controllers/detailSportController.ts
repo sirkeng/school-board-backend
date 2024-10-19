@@ -170,4 +170,23 @@ export class DetailSportController {
             res.status(500).json({ message: 'Failed to delete detail sport' });
         }
     }
+
+    static async getLastSeasons(req: Request, res: Response) {
+        const { limit = 3 } = req.query; // Default to 3 records if not provided
+        const detailSportRepository = AppDataSource.getRepository(DetailSport);
+
+        try {
+            const lastSeasons = await detailSportRepository.find({
+                order: {
+                    updatedAt: 'DESC',
+                },
+                take: Number(limit),
+                select: ['seasonNumber', 'seasonDetail', 'seasonImageUrl'],
+            });
+            res.status(200).json(lastSeasons);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Failed to fetch last seasons' });
+        }
+    }
 }
