@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Sport } from './Sport';
 import { Award } from './Award';
+import { RecentGame } from './RecentGame';
 
 @Entity('detail_sports')
 export class DetailSport {
@@ -50,6 +51,9 @@ export class DetailSport {
 
     @OneToMany(() => Award, award => award.detailSport)
     awards: Award[];
+
+    @OneToMany(() => RecentGame, recentGame => recentGame.detailSport)
+    recentGames: RecentGame[];
 
     @CreateDateColumn()
     createdAt: Date;

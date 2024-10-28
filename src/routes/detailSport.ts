@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { DetailSportController } from '../controllers/detailSportController';
 import { AwardController } from '../controllers/awardController';
+import { RecentGameController } from '../controllers/recentGameController';
 import { uploadLocal } from '../middlewares/uploadLocal';
 import { isLoggedin } from '../middlewares/auth';
 
@@ -36,4 +37,7 @@ router.post('/award', isLoggedin, AwardController.createAward); // Create award
 router.put('/award/:id', isLoggedin, AwardController.updateAward); // Update award by ID
 router.delete('/award/:id', isLoggedin, AwardController.deleteAward); // Delete award by ID
 
+router.post('/recent-game', isLoggedin, RecentGameController.createRecentGame); // Create recent game
+router.put('/recent-game/:id', isLoggedin, RecentGameController.updateRecentGame); // Update recent game by ID
+router.delete('/recent-game/:id', isLoggedin, RecentGameController.deleteRecentGame); // Delete recent game by ID
 export default router;

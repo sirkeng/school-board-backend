@@ -23,7 +23,7 @@ export class AwardController {
             const savedAward = await awardRepository.save(newAward);
             res.status(201).json(savedAward);
         } catch (error) {
-            console.error(error);
+            console.error('createAward', error);
             res.status(400).json({ message: 'Failed to create award' });
         }
     }
