@@ -14,7 +14,7 @@ export class DetailSportController {
         try {
             const detailSport = await detailSportRepository.findOne({
                 where: { sport: { id: Number(id) } },
-                relations: ['sport', 'awards'],
+                relations: ['sport', 'awards', 'recentGames'],
             });
             if (!detailSport) {
                 return res.status(404).json({ message: 'Detail sport not found' });
