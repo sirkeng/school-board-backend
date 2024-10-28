@@ -181,8 +181,10 @@ export class DetailSportController {
                     updatedAt: 'DESC',
                 },
                 take: Number(limit),
-                select: ['seasonNumber', 'seasonDetail', 'seasonImageUrl'],
+                relations: ['sport'],
+                // select: ['seasonNumber', 'seasonDetail', 'seasonImageUrl', 'sport'],
             });
+            console.log('lastSeasons', lastSeasons);
             res.status(200).json(lastSeasons);
         } catch (error) {
             console.error(error);
